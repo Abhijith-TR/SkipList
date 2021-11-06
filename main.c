@@ -42,7 +42,8 @@ int search(int x)
     node * temp = infi;
     int lvl = infi->curlevel;
     while (lvl--) {
-        while (temp->next->key<x) {
+        while (temp->next->key<=x) {
+            printf("Node: %lld\n",temp->next->key);
             temp = temp->next;
         }
         if (temp->key == x) return 1;
@@ -53,7 +54,6 @@ int search(int x)
 
 int insert(int x, int level)
 {
-    //printf("111\n");
     node ** rem = malloc(infi->curlevel*sizeof(node *));
     node * temp = infi;
     int lvl = infi->curlevel;
@@ -64,16 +64,9 @@ int insert(int x, int level)
         rem[lvl]=temp;
         if (temp->down!=NULL) temp = temp->down;
     }
-    // printf("222\n");
-    // printf("%d\n",level);
-    // printf("%d\n",infi->height);
-    // printf("%lld\n",temp->key);
     if (temp->key==x) return -1;
-    //printf("%d %d\n",level,infi->height);
     if (level>infi->height)
     {
-        // printf("%d\n",level);
-        // printf("555\n");
         rem=(node**)realloc(rem,level*sizeof(node *));
         for (int i =infi->height;i<level;i++)
         {
@@ -86,7 +79,6 @@ int insert(int x, int level)
             infi=newinfi;
             rem[i]=infi;
         }
-        //printf("444\n");
     }
     node *tmp=NULL;
     for (int i=0;i<level;i++)
@@ -102,16 +94,45 @@ int insert(int x, int level)
         newnode->curlevel=i+1;
         newnode->height=level;
     }
-    //printf("333\n");
 }
 
 int delete (int x)
 {
+    node ** rem = malloc(infi->curlevel*sizeof(node *));
+    node * temp = infi;
+    int lvl = infi->curlevel;
+    while (lvl--) {
+        while (temp->next->key<=x) {
+            temp = temp->next;
+        }
+        rem[lvl]=temp;
+        if (temp->key==x && (temp->next != pinf||temp->prev->key != infi->key||temp->prev->down==NULL)) {
+            temp->prev->next = temp->next;
+            temp->next->prev = temp->prev;
+        }
+        else if (temp->key==x && temp->next == pinf && temp->prev->key==infi->key) {
+            node * ptr = infi;
+            infi = infi->down;
+            free(ptr);   
+        }
+        if (temp->down!=NULL) {
+            node * ptr;
+            ptr = temp;
+            temp = temp->down;
+            if (temp->key == x) free(ptr);
+        }
+    } 
+}
+
+long long min() 
+{
+    node * ptr = infi;
+    while (ptr->down!=NULL) ptr = ptr->down;
+    return ptr->next->key;
 }
 
 void print(node *ptr)
 {
-    // ptr = ptr->next;
     while (ptr != NULL)
     {
         printf("%lld ", ptr->key);
@@ -125,8 +146,6 @@ void traverse()
     node *temp = infi;
     while (temp != NULL)
     {
-        // printf("aaaaaa %lld\n",temp->key);
-        // printf("%d\n",temp->curlevel);
         print(temp);
         temp = temp->down;
     }
@@ -155,15 +174,12 @@ int main()
     pinf->next=NULL;
     pinf->up=NULL;
 
+    printf("1. Insert\n2.Search\n3.Delete\n");
 
     srand((unsigned)time(0)); /* Used to see the random number generator
     Otherwise the sequence of random numbers generated will be the same every time the program is executed */
 
     int n=100;
-    //printf("Max Height : ");
-    //scanf(" %d", &n);
-    //skip.maxlevel = n; // maximum height to which the skip tree will go
-
     printf("Command : ");
     while (1)
     {
@@ -171,6 +187,7 @@ int main()
         scanf(" %d", &x);
         if (x == 1)
         {
+            printf("Enter the number to insert : ");
             int in;
             scanf(" %d", &in);
             int level = 1;
@@ -181,12 +198,12 @@ int main()
                 p = rand();
                 if (level==n) break;
             }
-            //printf("%d\n", level);
             insert(in, level);
-            //traverse();
+            traverse();
         }
         else if (x == 2)
         {
+            printf("Enter the number to search in the skip list : ");
             int in;
             scanf(" %d",&in);
             if (search(in)) printf("Present in the skip list\n");
@@ -194,6 +211,17 @@ int main()
         }
         else if (x == 3)
         {
+            printf("Enter the number to delete from the skip list : ");
+            int in;
+            scanf(" %d",&in);
+            delete(in);
+            traverse();
+        }
+        else if (x == 4) 
+        {
+            long long m = min();
+            if (m!=pinf->key) printf("The minimum element is : %d\n",m);
+            else printf("No element has been inserted in the skip list \n");
         }
         else if (x == -1)
             break;
