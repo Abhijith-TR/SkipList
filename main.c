@@ -146,9 +146,12 @@ long long min()
 
 void print(node *ptr)
 {
-    while (ptr != NULL)
+    printf("Level %d - ",ptr->curlevel);
+    ptr = ptr->next;
+    while (ptr->next != NULL)
     {
-        printf("%lld ", ptr->key);
+        if (ptr->next!=pinf) printf("%lld -> ", ptr->key);
+        else printf("%lld",ptr->key);
         ptr = ptr->next;
     }
     printf("\n");
@@ -166,6 +169,12 @@ void traverse()
 
 int main()
 {
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
+    printf("Should the times for each operation be displayed? (Y/N) : ");
+    char t ;
+    scanf(" %c",&t);
+
     infi = malloc(sizeof(node));
     infi->key = -1;
     for (int i = 0; i < 63; i++)
@@ -186,23 +195,27 @@ int main()
     pinf->next = NULL;
     pinf->up = NULL;
 
-    printf("1. Insert\n2. Search\n3. Delete\n4. Minimum\n-1 To EXIT\n");
+    printf("1. Insert\n2. Search\n3. Delete\n4. Minimum\n5. Traverse\n-1 To EXIT\n");
 
     srand((unsigned)time(0)); /* Used to see the random number generator
     Otherwise the sequence of random numbers generated will be the same every time the program is executed */
 
     printf("Command : ");
+    time_t s , f;
+    s = clock();
     while (1)
     {
         int x;
         scanf(" %d", &x);
         if (x == 1)
         {
+            time_t start,finish;
             printf("Enter the number to be inserted in the skip list : ");
             int in;
             scanf(" %d", &in);
             int level = 1;
             int p = rand();
+            start = clock();
             while (p % 2)
             {
                 level++;
@@ -210,8 +223,14 @@ int main()
                 if (level == max_height)
                     break;
             }
+            level = 30;
             insert(in, level);
-            traverse();
+            finish = clock();
+            if (t=='Y') 
+            {
+                printf("The time taken to perform the insert operation is %lf\n",(double)(finish - start)/CLOCKS_PER_SEC);
+            }
+            //traverse();
         }
         else if (x == 2)
         {
@@ -229,7 +248,7 @@ int main()
             int in;
             scanf(" %d", &in);
             delete (in);
-            traverse();
+            //traverse();
         }
         else if (x == 4)
         {
@@ -239,10 +258,17 @@ int main()
             else
                 printf("No element has been inserted in the skip list \n");
         }
+        else if (x==5) {
+            traverse();
+        }
         else if (x == -1)
             break;
+        
+        printf("\n");
         printf("Command : ");
     }
+    f = clock();
+    printf("%lf\n",(double)(f-s)/CLOCKS_PER_SEC);
     free(infi);
     free(pinf);
     return 0;
