@@ -13,7 +13,6 @@ typedef struct myNode
     int curlevel;
 } node;
 
-node **levels;
 node *infi, *pinf;
 
 typedef struct Skip_list
