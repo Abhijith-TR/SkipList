@@ -128,8 +128,7 @@ int delete (int x)
         }
         if (temp->down != NULL)
         {
-            node *ptr;
-            ptr = temp;
+            node *ptr = temp;
             temp = temp->down;
             if (temp->key == x)
                 free(ptr);
@@ -157,11 +156,11 @@ void print(node *ptr)
 
 void traverse()
 {
-    node *temp = infi;
-    while (temp != NULL)
+    node *ptr = infi;
+    while (ptr != NULL)
     {
-        print(temp);
-        temp = temp->down;
+        print(ptr);
+        ptr = ptr->down;
     }
 }
 
@@ -244,4 +243,7 @@ int main()
             break;
         printf("Command : ");
     }
+    free(infi);
+    free(pinf);
+    return 0;
 }
