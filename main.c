@@ -248,6 +248,11 @@ int main()
             int in;
             scanf(" %d", &in);
             delete (in);
+            //int x = search(in);  //Uncomment if duplicates to be deleted when delete is called
+            //while (x!=0) {
+                //delete(in);
+                //x = search(in);
+            //}
             //traverse();
         }
         else if (x == 4)
