@@ -4,6 +4,10 @@
 
 #define max_height 100
 
+//print beautifully
+//time to generate output
+//insert location of input file
+
 typedef struct myNode
 {
     // Nodes of the linked list at each level
