@@ -4,9 +4,9 @@
 
 #define max_height 100
 
-//print beautifully
-//time to generate output
-//insert location of input file
+// print beautifully
+// time to generate output
+// insert location of input file
 
 typedef struct myNode
 {
@@ -150,12 +150,14 @@ long long min()
 
 void print(node *ptr)
 {
-    printf("Level %d - ",ptr->curlevel);
+    printf("Level %d - ", ptr->curlevel);
     ptr = ptr->next;
     while (ptr->next != NULL)
     {
-        if (ptr->next!=pinf) printf("%lld -> ", ptr->key);
-        else printf("%lld",ptr->key);
+        if (ptr->next != pinf)
+            printf("%lld -> ", ptr->key);
+        else
+            printf("%lld", ptr->key);
         ptr = ptr->next;
     }
     printf("\n");
@@ -173,11 +175,11 @@ void traverse()
 
 int main()
 {
-    freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
     printf("Should the times for each operation be displayed? (Y/N) : ");
-    char t ;
-    scanf(" %c",&t);
+    char t;
+    scanf(" %c", &t);
 
     infi = malloc(sizeof(node));
     infi->key = -1;
@@ -205,7 +207,7 @@ int main()
     Otherwise the sequence of random numbers generated will be the same every time the program is executed */
 
     printf("Command : ");
-    time_t s , f;
+    time_t s, f;
     s = clock();
     while (1)
     {
@@ -213,7 +215,7 @@ int main()
         scanf(" %d", &x);
         if (x == 1)
         {
-            time_t start,finish;
+            time_t start, finish;
             printf("Enter the number to be inserted in the skip list : ");
             int in;
             scanf(" %d", &in);
@@ -227,37 +229,51 @@ int main()
                 if (level == max_height)
                     break;
             }
-            level = 30;
+            // level = 30;
             insert(in, level);
             finish = clock();
-            if (t=='Y') 
+            if (t == 'Y')
             {
-                printf("The time taken to perform the insert operation is %lf\n",(double)(finish - start)/CLOCKS_PER_SEC);
+                printf("The time taken to perform the insert operation is %lfs\n", (double)(finish - start) / CLOCKS_PER_SEC);
             }
-            //traverse();
+            // traverse();
         }
         else if (x == 2)
         {
+            time_t start, finish;
             printf("Enter the number to be searched in the skip list : ");
             int in;
             scanf(" %d", &in);
+            start = clock();
             if (search(in))
                 printf("Present in the skip list\n");
             else
                 printf("Not present in the skip list\n");
+            finish = clock();
+            if (t == 'Y')
+            {
+                printf("The time taken to perform the search operation is %lfs\n", (double)(finish - start) / CLOCKS_PER_SEC);
+            }
         }
         else if (x == 3)
         {
+            time_t start, finish;
             printf("Enter the number to be delete from the skip list : ");
             int in;
             scanf(" %d", &in);
+            start = clock();
             delete (in);
-            //int x = search(in);  //Uncomment if duplicates to be deleted when delete is called
-            //while (x!=0) {
-                //delete(in);
-                //x = search(in);
+            finish = clock();
+            if (t == 'Y')
+            {
+                printf("The time taken to perform the delete operation is %lfs\n", (double)(finish - start) / CLOCKS_PER_SEC);
+            }
+            // int x = search(in);  //Uncomment if duplicates to be deleted when delete is called
+            // while (x!=0) {
+            // delete(in);
+            // x = search(in);
             //}
-            //traverse();
+            // traverse();
         }
         else if (x == 4)
         {
@@ -267,17 +283,18 @@ int main()
             else
                 printf("No element has been inserted in the skip list \n");
         }
-        else if (x==5) {
+        else if (x == 5)
+        {
             traverse();
         }
         else if (x == -1)
             break;
-        
+
         printf("\n");
         printf("Command : ");
     }
     f = clock();
-    printf("%lf\n",(double)(f-s)/CLOCKS_PER_SEC);
+    printf("%lf\n", (double)(f - s) / CLOCKS_PER_SEC);
     free(infi);
     free(pinf);
     return 0;
