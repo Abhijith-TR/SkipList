@@ -2,48 +2,75 @@
 #include <stdlib.h>
 #include <time.h> // Required to use random number generator to simulate tossing a coin
 
+// We define the maximum height of the levels in skip-list to be 100
 #define max_height 100
 
-// print beautifully
-// time to generate output
-// insert location of input file
+// Print beautifully
+// Time to generate output
+// Insert location of input file
 
 typedef struct myNode
 {
     // Nodes of the linked list at each level
     long long key;
+
+    // Pointers to the next, prev, above and below nodes in the skip-list
     struct myNode *next, *prev, *up, *down;
-    int height; // Level of a node (randomly chosen)
+
+    // Level of a node (randomly chosen)
+    int height;
+
+    // Variable to check the current level at which code is working
     int curlevel;
 } node;
 
 node *infi, *pinf;
 
+/*
 typedef struct Skip_list
 {
     // The skip list and common attributes of all the skip list elements
+
+    // Variable to store the maxlevel of skip list
     int maxlevel;
+
+    // Variable to store level of a particular node
     int level;
-    float fract; // Fraction of pointers at level i that have pointers to level i+1
+
+    // Fraction of pointers at level i that have pointers to level i+1
+    float fract;
+
+    // Pointer to the head of the linked list at a particular level
     node *head;
-} skip_list;
+} skip_list; // Renaming for simplicity
 
-skip_list skip;
+skip_list skip; // Variable to store the entire skip list
+*/
 
+/*
+// Function to obtain the log
 int logg(int n, int b)
 {
+    // If n == 0 return 0
     if (n == 0)
         return 0;
+
+    // If n == b return 1
     if (n == b)
         return 1;
+    // Otherwise call it again with changed parameters
+
     else
         return 1 + logg(n / b, b);
 }
+*/
 
+// Function to search for any element inside the skip-list
 int search(int x)
 {
     node *temp = infi;
     int lvl = infi->curlevel;
+
     while (lvl--)
     {
         while (temp->next->key <= x)
@@ -51,6 +78,7 @@ int search(int x)
             printf("Node: %lld\n", temp->next->key);
             temp = temp->next;
         }
+
         if (temp->key == x)
             return 1;
         temp = temp->down;
@@ -58,11 +86,13 @@ int search(int x)
     return 0;
 }
 
+// Function to insert any element inside the skip-list
 int insert(int x, int level)
 {
     node **rem = malloc(infi->curlevel * sizeof(node *));
     node *temp = infi;
     int lvl = infi->curlevel;
+
     while (lvl--)
     {
         while (temp->next->key < x)
@@ -73,11 +103,14 @@ int insert(int x, int level)
         if (temp->down != NULL)
             temp = temp->down;
     }
+
     if (temp->key == x)
         return -1;
+
     if (level > infi->height)
     {
         rem = (node **)realloc(rem, level * sizeof(node *));
+
         for (int i = infi->height; i < level; i++)
         {
             node *newinfi = malloc(sizeof(node));
@@ -91,7 +124,9 @@ int insert(int x, int level)
             rem[i] = infi;
         }
     }
+
     node *tmp = NULL;
+
     for (int i = 0; i < level; i++)
     {
         node *newnode = malloc(sizeof(node));
@@ -107,6 +142,7 @@ int insert(int x, int level)
     }
 }
 
+// Function to delete any element from the skip-list
 int delete (int x)
 {
     node **rem = malloc(infi->curlevel * sizeof(node *));
@@ -140,6 +176,7 @@ int delete (int x)
     }
 }
 
+// Function to return the minimum value among the elements in the skip-list
 long long min()
 {
     node *ptr = infi;
@@ -148,6 +185,7 @@ long long min()
     return ptr->next->key;
 }
 
+// Function to print one level of skip-list
 void print(node *ptr)
 {
     printf("Level %d - ", ptr->curlevel);
@@ -163,6 +201,7 @@ void print(node *ptr)
     printf("\n");
 }
 
+// Function to print the entire skip-list
 void traverse()
 {
     node *ptr = infi;
@@ -268,7 +307,7 @@ int main()
             {
                 printf("The time taken to perform the delete operation is %lfs\n", (double)(finish - start) / CLOCKS_PER_SEC);
             }
-            // int x = search(in);  //Uncomment if duplicates to be deleted when delete is called
+            // int x = search(in);  // Uncomment if duplicates to be deleted when delete is called
             // while (x!=0) {
             // delete(in);
             // x = search(in);
