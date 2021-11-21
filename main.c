@@ -1,3 +1,12 @@
+// Group 1
+
+// Implementation of Skip Lists
+
+// Prashant Mittal 2020CSB1113
+// Abhijith
+// Shahnawaz
+// Vinit
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h> // Required to use random number generator to simulate tossing a coin
@@ -160,31 +169,54 @@ int insert(int x, int level)
 // Function to delete any element from the skip-list
 int delete (int x)
 {
+    // Allocating memory to pointer rem
     node **rem = malloc(infi->curlevel * sizeof(node *));
+
+    // Temp pointing to infi
     node *temp = infi;
+
+    // lvl stores the curlevel of infi
     int lvl = infi->curlevel;
+
+    // While we don't reach bottom most level keep going down
     while (lvl--)
     {
+        // While value in temp->next node is less than or equal to x keep moving to next node
         while (temp->next->key <= x)
         {
+            // Moving to next node
             temp = temp->next;
         }
+
+        // rem[lvl] points to the temp at this point
         rem[lvl] = temp;
+
+        // If temp->key equals x and temp is not a corner element or bottommost element then delete the element from linked list
+        // Change the next of prev and prev of next
         if (temp->key == x && (temp->next != pinf || temp->prev->key != infi->key || temp->prev->down == NULL))
         {
             temp->prev->next = temp->next;
             temp->next->prev = temp->prev;
         }
+
+        // If key in temp is x and it is a corner element free the pointer infi after moving one level down
         else if (temp->key == x && temp->next == pinf && temp->prev->key == infi->key)
         {
             node *ptr = infi;
             infi = infi->down;
             free(ptr);
         }
+
+        // If temp->down is not NULL then make temp equals temp->down
         if (temp->down != NULL)
         {
+            // ptr points to temp
             node *ptr = temp;
+
+            // Move one level down
             temp = temp->down;
+
+            // If value in temp is equal to x free pointer ptr
             if (temp->key == x)
                 free(ptr);
         }
@@ -253,10 +285,10 @@ void traverse()
 int main()
 {
     // Taking input from file input.txt
-    freopen("input.txt", "r", stdin);
+    // freopen("input.txt", "r", stdin);
 
     // Writing the output in output.txt file
-    freopen("output.txt", "w", stdout);
+    // freopen("output.txt", "w", stdout);
 
     // Asking the user if he/she wants to see the time taken for every function
     printf("Should the times for each operation be displayed? (Y/N) : ");
