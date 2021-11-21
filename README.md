@@ -1,9 +1,9 @@
 # SkipList
 ### Team members
-Abhijith T R - 2020CSB1062
-Prashant Mittal - 2020CSB1113
-Shahnawaz Khan - 2020CSB1123
-Vinit Nana Hagone - 2020CSB1361
+Abhijith T R - 2020CSB1062  
+Prashant Mittal - 2020CSB1113  
+Shahnawaz Khan - 2020CSB1123  
+Vinit Nana Hagone - 2020CSB1361  
 ### Teaching Assistant
 Simran Setia
 ### Skip List Implementation as a part of CS201(DSA) project.
