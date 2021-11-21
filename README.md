@@ -24,4 +24,6 @@ If search is pressed, there are no restrictions apart from the requirement to in
 
 If delete operation is used, there are no restrictions apart from the requirement to insert only integers. If the element is present, the element is simply deleted and nothing is displayed. If the element is not present, no error will be raised, however no element will be deleted from the skip list.  
 
-The find minimum operation accepts no entries and simply returns the smallest valid element from the skip list. If the skip list was empty, it will say so on the screen. 
+The find minimum operation accepts no entries and simply returns the smallest valid element from the skip list. If the skip list was empty, it will say so on the screen.  
+
+Uncomment the read and write from file lines (first two lines in main) and enter the inputs in input.txt to see running times for a large sequence of operations without human delay in entering values. 
