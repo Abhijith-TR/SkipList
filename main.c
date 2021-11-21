@@ -92,7 +92,7 @@ int search(int x)
         while (temp->next->key <= x)
         {
             // Printing the value of element smaller than or equals to x
-            printf("Node: %lld\n", temp->next->key);
+            //printf("Node: %lld\n", temp->next->key);
 
             // Moving onto the next element in linked list on a particular level
             temp = temp->next;
@@ -113,31 +113,47 @@ int search(int x)
 // Function to insert any element inside the skip-list
 int insert(int x, int level)
 {
+    //Creating temporary storage for the pointers at each level at which we go down
     node **rem = malloc(infi->curlevel * sizeof(node *));
+
+    //Creating a temporary node for traversal
     node *temp = infi;
+
+    //Initialising the height to move down
     int lvl = infi->curlevel;
 
+    //Until you are at the lowermost level
     while (lvl--)
     {
+        //Move forward until you find the element greater than the element x
         while (temp->next->key < x)
         {
             temp = temp->next;
         }
+        //Whenever you have to move down store the address of the node to be used
         rem[lvl] = temp;
+
+        //If you are not at the lowermost level, go down
         if (temp->down != NULL)
             temp = temp->down;
     }
 
-    if (temp->key == x)
-        return -1;
+    // if (temp->key == x)
+    //     return -1;
 
+    //If the height is greater than the current height of the skip list
     if (level > infi->height)
-    {
+    {   
+        //Allocate more memory to store the new infinity values required
         rem = (node **)realloc(rem, level * sizeof(node *));
 
+        //Allocate as many more infinities as required
         for (int i = infi->height; i < level; i++)
         {
+            //Allocate memory for the new infinity
             node *newinfi = malloc(sizeof(node));
+
+            //Copy the contents of infinity to the new infinity
             newinfi->key = infi->key;
             newinfi->height = level;
             newinfi->curlevel = i + 1;
@@ -145,21 +161,32 @@ int insert(int x, int level)
             newinfi->down = infi;
             newinfi->next = pinf;
             infi = newinfi;
+
+            //Set the previous of the new level to the new infinity
             rem[i] = infi;
         }
     }
 
+    //Give some memory for the new temporary node
     node *tmp = NULL;
 
+    //Go from the lowermost to the highest level
     for (int i = 0; i < level; i++)
-    {
+    {   
+        //Allocate memory for the new node
         node *newnode = malloc(sizeof(node));
+
+        //Store the new values in the new node to be made
         newnode->key = x;
         newnode->prev = rem[i];
         newnode->next = rem[i]->next;
+
+        //Set the next of the new node to the newly created pointer
         rem[i]->next = newnode;
         newnode->down = tmp;
         newnode->next->prev = newnode;
+
+        //Set the heights of the newly created nodes
         tmp = newnode;
         newnode->curlevel = i + 1;
         newnode->height = level;
@@ -585,8 +612,8 @@ int main()
     // Finishing the clock after all the functions performed
     f = clock();
 
-    // Printing the total execution time by taking difference of f ans s
-    printf("%lf\n", (double)(f - s) / CLOCKS_PER_SEC);
+    // Printing the total execution time by taking difference of f and s
+    if (t=='Y') printf("Total time taken for the execution of the program is %lf\n", (double)(f - s) / CLOCKS_PER_SEC);
 
     // Freeing the pointer infi
     free(infi);
