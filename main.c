@@ -472,5 +472,6 @@ int main()
 
     // Freeing the pointer pinf
     free(pinf);
+    
     return 0;
 }
