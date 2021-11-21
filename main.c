@@ -194,63 +194,119 @@ int delete (int x)
 // Function to return the minimum value among the elements in the skip-list
 long long min()
 {
+    // Storing the address of infi in variable ptr
     node *ptr = infi;
+
+    // While we don't read the lowest level we move down by one level
     while (ptr->down != NULL)
         ptr = ptr->down;
+
+    // Return the value inside the ptr->next pointer in the bottommost level of skip-list
     return ptr->next->key;
 }
 
 // Function to print one level of skip-list
 void print(node *ptr)
 {
+    // Printing the current level number
     printf("Level %d - ", ptr->curlevel);
+
+    // Moving on to the next node in this level
     ptr = ptr->next;
+
+    // While next of ptr is not NULL move on to next node
     while (ptr->next != NULL)
     {
+        // If next of ptr doesn't point to positive infinity then print value with ->
         if (ptr->next != pinf)
             printf("%lld -> ", ptr->key);
+
+        // If it is the last node don't print ->
         else
             printf("%lld", ptr->key);
+
+        // Move on to the next node on this level
         ptr = ptr->next;
     }
+
+    // Print new line to end the level
     printf("\n");
 }
 
 // Function to print the entire skip-list
 void traverse()
 {
+    // Storing the address of infi in ptr
     node *ptr = infi;
+
+    // While we don't reach the bottom most level keep going down
     while (ptr != NULL)
     {
+        // Calling print function to print current level of the skip-list
         print(ptr);
+
+        // Move down by one level
         ptr = ptr->down;
     }
 }
 
 int main()
 {
-    // freopen("input.txt", "r", stdin);
-    // freopen("output.txt", "w", stdout);
+    // Taking input from file input.txt
+    freopen("input.txt", "r", stdin);
+
+    // Writing the output in output.txt file
+    freopen("output.txt", "w", stdout);
+
+    // Asking the user if he/she wants to see the time taken for every function
     printf("Should the times for each operation be displayed? (Y/N) : ");
+
+    // Variable to store the input for Y/N
     char t;
+
+    // Taking in the input for Y/N
     scanf(" %c", &t);
 
+    // Allocating memeory to the pointer infi
     infi = malloc(sizeof(node));
+
+    // Setting the value of key to -1
     infi->key = -1;
+
+    // Making the value of infi->key equals -2^63
     for (int i = 0; i < 63; i++)
         infi->key *= 2;
 
+    // Setting the initial height of infi as 1
     infi->height = 1;
+
+    // Settinf the curlevel of infi as 1
     infi->curlevel = 1;
+
+    // Making next, prev, up, down of infi as NULL
     infi->next = infi->prev = infi->up = infi->down = NULL;
 
+    // Allocating memory to pinf
     pinf = malloc(sizeof(node));
+
+    // Setting the key of pinf to 2^63 - 1
     pinf->key = 9223372036854775807;
-    infi->key = pinf->key * -1 - 1;
+
+    // infi->key = pinf->key * -1 - 1;
+
+    // Setting the height of p to 1
     pinf->height = 1;
+
+    // Setting current level of p to 1
     pinf->curlevel = 1;
+
+    // Giving infi to the prev of pinf
     pinf->prev = infi;
+
+    // Giving pinf to the next of infi
     infi->next = pinf;
+
+    // Setting next, up, down of pinf to NULL
     pinf->down = NULL;
     pinf->next = NULL;
     pinf->up = NULL;
@@ -371,6 +427,7 @@ int main()
                 // If we're asked the total searching time then we would print the below line
                 printf("The time taken to perform the search operation is %lfs\n", (double)(finish - start) / CLOCKS_PER_SEC);
             }
+
             // traverse();
         }
 
@@ -391,7 +448,7 @@ int main()
             // Taking input of the value to be deleted from the skip-list
             scanf(" %d", &in);
 
-            // Starting the clock for calculating searching time
+            // Starting the clock for calculating deletion time
             start = clock();
 
             // Calling delete function passing the vale that has to be deleted
@@ -419,8 +476,18 @@ int main()
         {
             // If command is 4 that means we have to find the minimum element in the skip-list
 
+            // start is the start time of min function
+            // finish is the finish time of min function
+            time_t start, finish;
+
+            // Starting the clock for calculating finding minimum element time
+            start = clock();
+
             // Calling the min function and storing the minimum value in m
             long long m = min();
+
+            // Finishing time of the clock
+            finish = clock();
 
             // If the m is not equals to -2^63 that means there is an element inside the skip-list and minimum value is m
             if (m != pinf->key)
@@ -430,6 +497,12 @@ int main()
             else
                 printf("No element has been inserted in the skip list \n");
 
+            if (t == 'Y')
+            {
+                // If we're asked the total time for finding min element then we would print the below line
+                printf("The time taken to perform the min operation is %lfs\n", (double)(finish - start) / CLOCKS_PER_SEC);
+            }
+
             // traverse();
         }
 
@@ -437,8 +510,24 @@ int main()
         {
             // If command is 5 that means we have to traverse the entire skip-list and print it
 
+            // start is the start time of traverse function
+            // finish is the finish time of traverse function
+            time_t start, finish;
+
+            // Starting the clock for traversal time
+            start = clock();
+
             // Calling traverse function which will print the entire skip-list level wise
             traverse();
+
+            // Finishing time of the clock
+            finish = clock();
+
+            if (t == 'Y')
+            {
+                // If we're asked the total time for traversing skip-list then we would print the below line
+                printf("The time taken to perform the traversal operation is %lfs\n", (double)(finish - start) / CLOCKS_PER_SEC);
+            }
         }
 
         // If the command is -1 that means break the while loop and no more functions are to be performed on the skip-list
@@ -472,6 +561,6 @@ int main()
 
     // Freeing the pointer pinf
     free(pinf);
-    
+
     return 0;
 }
